@@ -1,0 +1,98 @@
+// Prisma Schema for Meeting Room Management System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// 会议室表
+model MeetingRoom {
+  id          Int      @id @default(autoincrement())
+  roomNumber  Int      @unique // 会议室编号 1-8
+  roomName    String   // 会议室名称
+  capacity    Int      @default(10) // 容纳人数
+  facilities  String?  // 设备设施（JSON字符串）
+  status      String   @default("available") // available/maintenance
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  meetings    Meeting[]
+  
+  @@map("meeting_rooms")
+}
+
+// 团队成员表
+model TeamMember {
+  id          Int      @id @default(autoincrement())
+  name        String   // 姓名
+  email       String   @unique // QQ邮箱
+  authCode    String?  // QQ邮箱授权码
+  department  String?  // 部门
+  position    String?  // 职位
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  organizedMeetings Meeting[]           @relation("Organizer")
+  meetingParticipants MeetingParticipant[]
+  checkIns          CheckIn[]
+  
+  @@map("team_members")
+}
+
+// 会议预约表
+model Meeting {
+  id          Int      @id @default(autoincrement())
+  roomId      Int      // 会议室ID
+  title       String   // 会议主题
+  startTime   DateTime // 开始时间
+  endTime     DateTime // 结束时间
+  organizerId Int      // 预约人ID
+  description String?  // 会议描述
+  status      String   @default("scheduled") // scheduled/cancelled/completed
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  room        MeetingRoom        @relation(fields: [roomId], references: [id])
+  organizer   TeamMember         @relation("Organizer", fields: [organizerId], references: [id])
+  participants MeetingParticipant[]
+  checkIns    CheckIn[]
+  
+  @@index([roomId, startTime, endTime])
+  @@map("meetings")
+}
+
+// 会议参会人员关联表
+model MeetingParticipant {
+  id          Int      @id @default(autoincrement())
+  meetingId   Int      // 会议ID
+  memberId    Int      // 参会人员ID
+  status      String   @default("invited") // invited/confirmed/rejected
+  createdAt   DateTime @default(now())
+  
+  meeting     Meeting    @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  member      TeamMember @relation(fields: [memberId], references: [id])
+  
+  @@unique([meetingId, memberId])
+  @@map("meeting_participants")
+}
+
+// 签到记录表
+model CheckIn {
+  id          Int      @id @default(autoincrement())
+  meetingId   Int      // 会议ID
+  memberId    Int      // 参会人员ID
+  checkInTime DateTime @default(now()) // 签到时间
+  status      String   @default("normal") // normal/late/absent
+  createdAt   DateTime @default(now())
+  
+  meeting     Meeting    @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  member      TeamMember @relation(fields: [memberId], references: [id])
+  
+  @@unique([meetingId, memberId])
+  @@map("check_ins")
+}
+
