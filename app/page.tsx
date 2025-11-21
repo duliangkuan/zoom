@@ -1,7 +1,7 @@
 'use client'
 
 import { Layout, Menu, Card, Row, Col, Statistic } from 'antd'
-import { CalendarOutlined, TeamOutlined, CheckCircleOutlined, HomeOutlined } from '@ant-design/icons'
+import { CalendarOutlined, TeamOutlined, CheckCircleOutlined, HomeOutlined, ThunderboltOutlined } from '@ant-design/icons'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
@@ -138,6 +138,17 @@ export default function Home() {
               >
                 <p>查看会议列表并进行签到</p>
                 <CheckCircleOutlined style={{ fontSize: '48px', color: '#faad14', marginTop: '20px' }} />
+              </Card>
+            </Col>
+            <Col xs={24} md={12}>
+              <Card
+                title="初始化会议室"
+                hoverable
+                style={{ height: '200px', cursor: 'pointer' }}
+                onClick={() => window.location.href = '/init'}
+              >
+                <p>初始化系统所需的8个会议室</p>
+                <ThunderboltOutlined style={{ fontSize: '48px', color: '#722ed1', marginTop: '20px' }} />
               </Card>
             </Col>
           </Row>
