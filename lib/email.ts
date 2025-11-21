@@ -161,10 +161,17 @@ export async function sendBulkMeetingInvitations(
   },
   memberCredentials?: Array<{ email: string; authCode?: string }>
 ) {
+  // 如果提供了成员凭证，优先使用第一个（通常是组织者的配置）
+  // 如果没有提供，则使用环境变量或默认配置
+  const defaultCredentials = memberCredentials && memberCredentials.length > 0 
+    ? memberCredentials[0] 
+    : undefined
+
   const results = await Promise.allSettled(
     emails.map((email, index) => {
-      // 查找对应的授权码
-      const credentials = memberCredentials?.find(m => m.email === email)
+      // 查找对应的授权码（按收件人邮箱匹配）
+      // 如果找不到，使用默认配置（通常是组织者的配置）
+      const credentials = memberCredentials?.find(m => m.email === email) || defaultCredentials
       return sendMeetingInvitation(
         email, 
         meeting,

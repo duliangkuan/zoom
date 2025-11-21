@@ -29,7 +29,7 @@ export async function POST(
       )
     }
 
-    // 获取所有参会人员的邮箱和授权码
+    // 获取所有参会人员的邮箱
     const emails = meeting.participants
       .map(p => p.member.email)
       .filter(Boolean)
@@ -41,13 +41,41 @@ export async function POST(
       )
     }
 
-    // 准备成员凭证（邮箱和授权码）
-    const memberCredentials = meeting.participants
-      .filter(p => p.member.email && p.member.authCode)
-      .map(p => ({
-        email: p.member.email,
-        authCode: p.member.authCode || undefined,
-      }))
+    // 使用组织者的邮箱和授权码发送邮件（如果组织者有配置）
+    // 如果没有配置，则使用每个参会人员自己的邮箱配置作为后备
+    const organizerEmail = meeting.organizer.email
+    const organizerAuthCode = meeting.organizer.authCode
+
+    // 如果组织者有邮箱和授权码，使用组织者的配置统一发送
+    // 否则使用每个参会人员自己的邮箱配置
+    let memberCredentials: Array<{ email: string; authCode?: string }> | undefined
+
+    if (organizerEmail && organizerAuthCode) {
+      // 使用组织者的邮箱配置发送给所有参会人员
+      // 第一个元素是组织者的配置，作为默认配置
+      memberCredentials = [
+        {
+          email: organizerEmail,
+          authCode: organizerAuthCode,
+        },
+        // 为每个收件人创建映射（如果收件人自己的邮箱配置存在，会优先使用）
+        ...meeting.participants
+          .filter(p => p.member.email && p.member.authCode && p.member.email !== organizerEmail)
+          .map(p => ({
+            email: p.member.email,
+            authCode: p.member.authCode || undefined,
+          })),
+      ]
+    } else {
+      // 使用每个参会人员自己的邮箱配置作为后备
+      memberCredentials = meeting.participants
+        .filter(p => p.member.email && p.member.authCode)
+        .map(p => ({
+          email: p.member.email,
+          authCode: p.member.authCode || undefined,
+        }))
+      memberCredentials = memberCredentials.length > 0 ? memberCredentials : undefined
+    }
 
     // 发送邮件
     const result = await sendBulkMeetingInvitations(
@@ -61,7 +89,7 @@ export async function POST(
         description: meeting.description || undefined,
         participants: meeting.participants.map(p => p.member.name),
       },
-      memberCredentials.length > 0 ? memberCredentials : undefined
+      memberCredentials
     )
 
     return NextResponse.json({
