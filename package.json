@@ -12,8 +12,11 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:status": "prisma migrate status",
     "db:studio": "prisma studio",
-    "setup": "npm install && npm run db:generate"
+    "db:seed": "node scripts/init-rooms.js",
+    "setup": "npm install && npm run db:generate",
+    "prebuild": "prisma generate"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",

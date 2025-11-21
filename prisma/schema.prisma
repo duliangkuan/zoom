@@ -1,7 +1,9 @@
 // Prisma Schema for Meeting Room Management System
+// 会议室管理系统数据库Schema
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = []
 }
 
 datasource db {
@@ -22,6 +24,8 @@ model MeetingRoom {
   
   meetings    Meeting[]
   
+  @@index([status])
+  @@index([roomNumber])
   @@map("meeting_rooms")
 }
 
@@ -40,6 +44,8 @@ model TeamMember {
   meetingParticipants MeetingParticipant[]
   checkIns          CheckIn[]
   
+  @@index([email])
+  @@index([department])
   @@map("team_members")
 }
 
@@ -56,12 +62,16 @@ model Meeting {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
-  room        MeetingRoom        @relation(fields: [roomId], references: [id])
-  organizer   TeamMember         @relation("Organizer", fields: [organizerId], references: [id])
+  room        MeetingRoom        @relation(fields: [roomId], references: [id], onDelete: Restrict)
+  organizer   TeamMember         @relation("Organizer", fields: [organizerId], references: [id], onDelete: Restrict)
   participants MeetingParticipant[]
   checkIns    CheckIn[]
   
   @@index([roomId, startTime, endTime])
+  @@index([organizerId])
+  @@index([status])
+  @@index([startTime])
+  @@index([endTime])
   @@map("meetings")
 }
 
@@ -74,9 +84,12 @@ model MeetingParticipant {
   createdAt   DateTime @default(now())
   
   meeting     Meeting    @relation(fields: [meetingId], references: [id], onDelete: Cascade)
-  member      TeamMember @relation(fields: [memberId], references: [id])
+  member      TeamMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
   
   @@unique([meetingId, memberId])
+  @@index([meetingId])
+  @@index([memberId])
+  @@index([status])
   @@map("meeting_participants")
 }
 
@@ -90,9 +103,13 @@ model CheckIn {
   createdAt   DateTime @default(now())
   
   meeting     Meeting    @relation(fields: [meetingId], references: [id], onDelete: Cascade)
-  member      TeamMember @relation(fields: [memberId], references: [id])
+  member      TeamMember @relation(fields: [memberId], references: [id], onDelete: Cascade)
   
   @@unique([meetingId, memberId])
+  @@index([meetingId])
+  @@index([memberId])
+  @@index([status])
+  @@index([checkInTime])
   @@map("check_ins")
 }
 
