@@ -79,7 +79,7 @@ export function isValidTimeInterval(startTime: Date | string, endTime: Date | st
   const end = dayjs(endTime)
   
   // 检查开始和结束时间是否为30分钟的倍数
-  if (!isValidTimeSlot(start) || !isValidTimeSlot(end)) {
+  if (!isValidTimeSlot(start.toDate()) || !isValidTimeSlot(end.toDate())) {
     return false
   }
   
