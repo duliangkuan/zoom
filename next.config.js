@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  experimental: {
-    serverActions: true,
-  },
   // 确保环境变量在构建时可用
   env: {
     DATABASE_URL: process.env.DATABASE_URL,
