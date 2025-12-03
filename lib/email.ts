@@ -2,13 +2,24 @@ import nodemailer from 'nodemailer'
 
 // 创建邮件传输器（使用指定邮箱和授权码）
 const createTransporter = (email?: string, authCode?: string) => {
+  const smtpUser = email || process.env.SMTP_USER
+  const smtpPass = authCode || process.env.SMTP_PASS
+
+  if (!smtpUser || !smtpPass) {
+    throw new Error('SMTP配置不完整：缺少邮箱地址或授权码')
+  }
+
   return nodemailer.createTransport({
     host: 'smtp.139.com',
-    port: 25,
-    secure: false, // true for 465, false for other ports
+    port: 994, // 139邮箱SSL端口
+    secure: true, // 使用SSL加密
     auth: {
-      user: email || process.env.SMTP_USER, // 139邮箱
-      pass: authCode || process.env.SMTP_PASS, // 139邮箱授权码
+      user: smtpUser, // 139邮箱
+      pass: smtpPass, // 139邮箱授权码
+    },
+    tls: {
+      // 不验证证书（某些环境下可能需要）
+      rejectUnauthorized: false,
     },
   })
 }
@@ -130,20 +141,44 @@ export async function sendMeetingInvitation(
 ) {
   try {
     const transporter = createTransporter(fromEmail, authCode)
-    const senderEmail = fromEmail || process.env.SMTP_USER || 'noreply@example.com'
+    const senderEmail = fromEmail || process.env.SMTP_USER
+    
+    if (!senderEmail) {
+      throw new Error('发件人邮箱地址未配置')
+    }
+
+    // 验证收件人邮箱格式
+    if (!to || !to.includes('@')) {
+      throw new Error(`收件人邮箱地址无效: ${to}`)
+    }
     
     const mailOptions = {
       from: `"会议室管理系统" <${senderEmail}>`,
       to,
       subject: `会议邀请：${meeting.title}`,
       html: generateMeetingEmailHTML(meeting),
+      // 添加编码设置
+      encoding: 'utf-8',
     }
 
+    console.log(`正在发送邮件到: ${to}, 发件人: ${senderEmail}`)
     const info = await transporter.sendMail(mailOptions)
+    console.log(`邮件发送成功: ${info.messageId}`)
     return { success: true, messageId: info.messageId }
   } catch (error: any) {
-    console.error('邮件发送失败:', error)
-    return { success: false, error: error.message }
+    console.error('邮件发送失败:', {
+      to,
+      fromEmail: fromEmail || process.env.SMTP_USER,
+      error: error.message,
+      code: error.code,
+      command: error.command,
+      response: error.response,
+    })
+    return { 
+      success: false, 
+      error: error.message || '邮件发送失败，请检查SMTP配置',
+      details: error.code ? `错误代码: ${error.code}` : undefined
+    }
   }
 }
 
