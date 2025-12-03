@@ -11,16 +11,20 @@ const createTransporter = (email?: string, authCode?: string) => {
 
   return nodemailer.createTransport({
     host: 'smtp.139.com',
-    port: 994, // 139邮箱SSL端口
+    port: 465, // 139邮箱SSL端口（官方推荐）
     secure: true, // 使用SSL加密
     auth: {
-      user: smtpUser, // 139邮箱
+      user: smtpUser, // 139邮箱完整地址
       pass: smtpPass, // 139邮箱授权码
     },
     tls: {
       // 不验证证书（某些环境下可能需要）
       rejectUnauthorized: false,
     },
+    // 添加连接超时设置
+    connectionTimeout: 10000, // 10秒
+    greetingTimeout: 10000,
+    socketTimeout: 10000,
   })
 }
 
@@ -161,23 +165,52 @@ export async function sendMeetingInvitation(
       encoding: 'utf-8',
     }
 
-    console.log(`正在发送邮件到: ${to}, 发件人: ${senderEmail}`)
+    console.log(`[邮件发送] 开始发送邮件`)
+    console.log(`  发件人: ${senderEmail}`)
+    console.log(`  收件人: ${to}`)
+    console.log(`  SMTP服务器: smtp.139.com:465 (SSL)`)
+    
+    // 验证SMTP连接
+    await transporter.verify()
+    console.log(`[邮件发送] SMTP连接验证成功`)
+    
     const info = await transporter.sendMail(mailOptions)
-    console.log(`邮件发送成功: ${info.messageId}`)
+    console.log(`[邮件发送] 邮件发送成功`)
+    console.log(`  消息ID: ${info.messageId}`)
+    console.log(`  响应: ${info.response}`)
     return { success: true, messageId: info.messageId }
   } catch (error: any) {
-    console.error('邮件发送失败:', {
+    const errorDetails: any = {
       to,
       fromEmail: fromEmail || process.env.SMTP_USER,
       error: error.message,
       code: error.code,
       command: error.command,
       response: error.response,
-    })
+      responseCode: error.responseCode,
+      errno: error.errno,
+      syscall: error.syscall,
+      hostname: error.hostname,
+    }
+    
+    console.error('[邮件发送] 邮件发送失败:', errorDetails)
+    
+    // 根据错误类型提供更友好的错误信息
+    let userFriendlyError = error.message || '邮件发送失败，请检查SMTP配置'
+    
+    if (error.code === 'EAUTH') {
+      userFriendlyError = 'SMTP认证失败，请检查邮箱地址和授权码是否正确'
+    } else if (error.code === 'ETIMEDOUT' || error.code === 'ECONNREFUSED') {
+      userFriendlyError = '无法连接到SMTP服务器，请检查网络连接和服务器地址'
+    } else if (error.code === 'EENVELOPE') {
+      userFriendlyError = '邮件地址格式错误，请检查收件人邮箱地址'
+    }
+    
     return { 
       success: false, 
-      error: error.message || '邮件发送失败，请检查SMTP配置',
-      details: error.code ? `错误代码: ${error.code}` : undefined
+      error: userFriendlyError,
+      details: error.code ? `错误代码: ${error.code}` : undefined,
+      fullError: process.env.NODE_ENV === 'development' ? errorDetails : undefined
     }
   }
 }
