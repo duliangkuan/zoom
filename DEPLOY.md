@@ -7,7 +7,7 @@
 1. GitHub 账户
 2. Vercel 账户（可通过 GitHub 登录）
 3. 数据库服务（推荐使用 Vercel Postgres 或其他 PostgreSQL 服务）
-4. QQ 邮箱 SMTP 配置
+4. 139 邮箱 SMTP 配置
 
 ## 部署步骤
 
@@ -43,14 +43,14 @@ git push origin main
   示例：postgresql://user:pass@localhost:5432/meeting_room_db
   ```
 
-- **SMTP_USER**：QQ 邮箱地址
+- **SMTP_USER**：139 邮箱地址
   ```
-  示例：your-email@qq.com
+  示例：your-email@139.com
   ```
 
-- **SMTP_PASS**：QQ 邮箱 SMTP 授权码
+- **SMTP_PASS**：139 邮箱 SMTP 授权码
   ```
-  从 QQ 邮箱设置中获取
+  从 139 邮箱设置中获取
   ```
 
 #### 配置步骤：
@@ -126,9 +126,9 @@ npx prisma migrate deploy
 1. 访问：`https://your-app.vercel.app/api/rooms/init`（POST 请求）
 2. 或访问初始化页面：`https://your-app.vercel.app/init`
 
-### 7. 配置 QQ 邮箱 SMTP
+### 7. 配置 139 邮箱 SMTP
 
-1. 登录 QQ 邮箱
+1. 登录 139 邮箱
 2. 进入 "设置" → "账户"
 3. 找到 "POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务"
 4. 开启 "POP3/SMTP服务" 或 "IMAP/SMTP服务"
@@ -184,7 +184,7 @@ npx prisma migrate deploy
 ### 邮件发送问题
 
 - 验证 `SMTP_USER` 和 `SMTP_PASS` 环境变量
-- 确保 QQ 邮箱 SMTP 服务已开启
+- 确保 139 邮箱 SMTP 服务已开启
 - 检查授权码是否正确
 
 ## 持续部署

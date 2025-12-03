@@ -10,8 +10,8 @@
 
 ```env
 DATABASE_URL=file:./dev.db
-SMTP_USER=your-qq-email@qq.com
-SMTP_PASS=your-qq-email-auth-code
+SMTP_USER=your-email@139.com
+SMTP_PASS=your-139-email-auth-code
 ```
 
 **重要**：SQLite的DATABASE_URL格式是 `file:./dev.db`，**不要加引号**。

@@ -3,12 +3,12 @@ import nodemailer from 'nodemailer'
 // 创建邮件传输器（使用指定邮箱和授权码）
 const createTransporter = (email?: string, authCode?: string) => {
   return nodemailer.createTransport({
-    host: 'smtp.qq.com',
-    port: 587,
+    host: 'smtp.139.com',
+    port: 25,
     secure: false, // true for 465, false for other ports
     auth: {
-      user: email || process.env.SMTP_USER, // QQ邮箱
-      pass: authCode || process.env.SMTP_PASS, // QQ邮箱授权码
+      user: email || process.env.SMTP_USER, // 139邮箱
+      pass: authCode || process.env.SMTP_PASS, // 139邮箱授权码
     },
   })
 }

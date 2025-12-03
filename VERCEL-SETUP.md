@@ -11,8 +11,8 @@ setup-vercel.cmd
 
 脚本将引导您：
 1. 配置 DATABASE_URL（数据库连接）
-2. 配置 SMTP_USER（QQ邮箱）
-3. 配置 SMTP_PASS（QQ邮箱授权码）
+2. 配置 SMTP_USER（139邮箱）
+3. 配置 SMTP_PASS（139邮箱授权码）
 4. 运行数据库迁移（可选）
 5. 重新部署应用（可选）
 
@@ -49,19 +49,19 @@ echo "postgresql://user:password@host:port/database" | vercel env add DATABASE_U
 echo "postgresql://user:password@host:port/database" | vercel env add DATABASE_URL development
 ```
 
-#### 2. 配置 SMTP_USER（QQ邮箱）
+#### 2. 配置 SMTP_USER（139邮箱）
 
 ```bash
-# 替换为你的QQ邮箱地址
-echo "your-email@qq.com" | vercel env add SMTP_USER production
-echo "your-email@qq.com" | vercel env add SMTP_USER preview
-echo "your-email@qq.com" | vercel env add SMTP_USER development
+# 替换为你的139邮箱地址
+echo "your-email@139.com" | vercel env add SMTP_USER production
+echo "your-email@139.com" | vercel env add SMTP_USER preview
+echo "your-email@139.com" | vercel env add SMTP_USER development
 ```
 
-#### 3. 配置 SMTP_PASS（QQ邮箱授权码）
+#### 3. 配置 SMTP_PASS（139邮箱授权码）
 
 ```bash
-# 替换为你的QQ邮箱授权码
+# 替换为你的139邮箱授权码
 echo "your-auth-code" | vercel env add SMTP_PASS production --sensitive
 echo "your-auth-code" | vercel env add SMTP_PASS preview --sensitive
 echo "your-auth-code" | vercel env add SMTP_PASS development --sensitive
@@ -89,9 +89,9 @@ npx prisma migrate deploy
 vercel --prod --yes
 ```
 
-## QQ 邮箱授权码获取方法
+## 139 邮箱授权码获取方法
 
-1. 登录 QQ 邮箱
+1. 登录 139 邮箱
 2. 进入 **设置** → **账户**
 3. 找到 **POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务**
 4. 开启 **POP3/SMTP服务** 或 **IMAP/SMTP服务**
@@ -155,7 +155,7 @@ vercel --prod --yes
 ### 邮件发送失败
 
 - 验证 SMTP_USER 和 SMTP_PASS 是否正确
-- 确保 QQ 邮箱已开启 SMTP 服务
+- 确保 139 邮箱已开启 SMTP 服务
 - 检查授权码是否过期（需要重新生成）
 
 ### 构建失败

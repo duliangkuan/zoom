@@ -54,9 +54,9 @@ if ([string]::IsNullOrWhiteSpace($databaseUrl)) {
 }
 
 # 2. 配置 SMTP_USER
-Write-Host "步骤 2: 配置 QQ 邮箱 (SMTP_USER)" -ForegroundColor Cyan
+Write-Host "步骤 2: 配置 139 邮箱 (SMTP_USER)" -ForegroundColor Cyan
 Write-Host ""
-$smtpUser = Read-Host "请输入 QQ 邮箱地址 (例如: your-email@qq.com)"
+$smtpUser = Read-Host "请输入 139 邮箱地址 (例如: your-email@139.com)"
 
 if ([string]::IsNullOrWhiteSpace($smtpUser)) {
     Write-Host "警告: 未输入 SMTP_USER，将跳过此配置" -ForegroundColor Yellow
@@ -73,15 +73,15 @@ if ([string]::IsNullOrWhiteSpace($smtpUser)) {
 }
 
 # 3. 配置 SMTP_PASS
-Write-Host "步骤 3: 配置 QQ 邮箱授权码 (SMTP_PASS)" -ForegroundColor Cyan
+Write-Host "步骤 3: 配置 139 邮箱授权码 (SMTP_PASS)" -ForegroundColor Cyan
 Write-Host ""
-Write-Host "提示: QQ 邮箱授权码获取方法：" -ForegroundColor Yellow
-Write-Host "1. 登录 QQ 邮箱" -ForegroundColor Yellow
+Write-Host "提示: 139 邮箱授权码获取方法：" -ForegroundColor Yellow
+Write-Host "1. 登录 139 邮箱" -ForegroundColor Yellow
 Write-Host "2. 设置 → 账户" -ForegroundColor Yellow
 Write-Host "3. 开启 POP3/SMTP 服务" -ForegroundColor Yellow
 Write-Host "4. 获取授权码" -ForegroundColor Yellow
 Write-Host ""
-$smtpPass = Read-Host "请输入 QQ 邮箱授权码" -AsSecureString
+$smtpPass = Read-Host "请输入 139 邮箱授权码" -AsSecureString
 $smtpPassPlain = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
     [Runtime.InteropServices.Marshal]::SecureStringToBSTR($smtpPass)
 )

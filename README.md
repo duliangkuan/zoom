@@ -6,7 +6,7 @@
 
 - ✅ **会议室预约**：8个会议室，24小时可预约，30分钟为最小单位
 - ✅ **时间段冲突检测**：自动检测并防止时间段冲突
-- ✅ **团队成员管理**：添加和管理团队成员信息（姓名、QQ邮箱）
+- ✅ **团队成员管理**：添加和管理团队成员信息（姓名、139邮箱）
 - ✅ **邮件邀请**：预约后一键发送会议邀请邮件（SMTP）
 - ✅ **会议签到**：查看会议列表并进行签到，自动判断是否迟到
 
@@ -15,7 +15,7 @@
 - **前端框架**：Next.js 14+ (App Router) + TypeScript
 - **UI组件库**：Ant Design
 - **数据库**：PostgreSQL (通过 Prisma ORM)
-- **邮件服务**：nodemailer (QQ邮箱SMTP)
+- **邮件服务**：nodemailer (139邮箱SMTP)
 - **部署平台**：Vercel
 
 ## 快速开始
@@ -34,9 +34,9 @@ npm install
 # 数据库连接（Vercel Postgres 或外部数据库）
 DATABASE_URL="postgresql://user:password@localhost:5432/meeting_room_db"
 
-# SMTP配置（QQ邮箱）
-SMTP_USER="your-qq-email@qq.com"
-SMTP_PASS="your-qq-email-auth-code"
+# SMTP配置（139邮箱）
+SMTP_USER="your-email@139.com"
+SMTP_PASS="your-139-email-auth-code"
 ```
 
 ### 3. 初始化数据库
@@ -99,8 +99,8 @@ git push -u origin main
 2. 导入你的 GitHub 仓库
 3. 配置环境变量：
    - `DATABASE_URL`: 数据库连接字符串
-   - `SMTP_USER`: QQ邮箱
-   - `SMTP_PASS`: QQ邮箱授权码
+   - `SMTP_USER`: 139邮箱
+   - `SMTP_PASS`: 139邮箱授权码
 4. 点击部署
 
 ### 3. 配置数据库
@@ -120,9 +120,9 @@ git push -u origin main
 - PlanetScale
 - 或其他 PostgreSQL 服务
 
-### 4. 配置 QQ 邮箱 SMTP
+### 4. 配置 139 邮箱 SMTP
 
-1. 登录 QQ邮箱
+1. 登录 139邮箱
 2. 设置 → 账户 → 开启 SMTP 服务
 3. 获取授权码
 4. 在 Vercel 环境变量中配置 `SMTP_USER` 和 `SMTP_PASS`
@@ -198,7 +198,7 @@ npm run db:studio      # 打开 Prisma Studio
 ## 注意事项
 
 1. **数据库初始化**：首次部署需要运行数据库迁移
-2. **SMTP配置**：确保QQ邮箱已开启SMTP服务并获取授权码
+2. **SMTP配置**：确保139邮箱已开启SMTP服务并获取授权码
 3. **时区设置**：系统默认使用中国时区（Asia/Shanghai）
 4. **时间段冲突**：系统会自动检测并防止时间段冲突
 

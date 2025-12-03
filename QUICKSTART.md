@@ -30,9 +30,9 @@ DATABASE_URL="file:./dev.db"
 # 或者使用PostgreSQL
 # DATABASE_URL="postgresql://user:password@localhost:5432/meeting_room_db"
 
-# QQ邮箱SMTP（可选，测试时可以暂时不填）
-SMTP_USER="your-qq-email@qq.com"
-SMTP_PASS="your-qq-email-auth-code"
+# 139邮箱SMTP（可选，测试时可以暂时不填）
+SMTP_USER="your-email@139.com"
+SMTP_PASS="your-139-email-auth-code"
 ```
 
 ### 3. 初始化数据库
@@ -69,7 +69,7 @@ npm run dev
 
 1. **添加团队成员** (`/team-members`)
    - 点击"添加成员"
-   - 输入姓名和QQ邮箱
+   - 输入姓名和139邮箱
    - 保存
 
 2. **预约会议** (`/booking`)

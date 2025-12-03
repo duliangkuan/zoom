@@ -40,8 +40,8 @@ if not "%DATABASE_URL%"=="" (
 echo.
 
 REM 2. Configure SMTP_USER
-echo [3/5] Configure QQ Email (SMTP_USER)
-set /p SMTP_USER="Enter QQ email (e.g. your-email@qq.com, Press Enter to skip): "
+echo [3/5] Configure 139 Email (SMTP_USER)
+set /p SMTP_USER="Enter 139 email (e.g. your-email@139.com, Press Enter to skip): "
 
 if not "%SMTP_USER%"=="" (
     echo [Adding] SMTP_USER...
@@ -55,15 +55,15 @@ if not "%SMTP_USER%"=="" (
 echo.
 
 REM 3. Configure SMTP_PASS
-echo [4/5] Configure QQ Email Auth Code (SMTP_PASS)
+echo [4/5] Configure 139 Email Auth Code (SMTP_PASS)
 echo.
-echo How to get QQ email auth code:
-echo   1. Login to QQ email
+echo How to get 139 email auth code:
+echo   1. Login to 139 email
 echo   2. Settings -^> Account
 echo   3. Enable POP3/SMTP service
 echo   4. Get auth code
 echo.
-set /p SMTP_PASS="Enter QQ email auth code (Press Enter to skip): "
+set /p SMTP_PASS="Enter 139 email auth code (Press Enter to skip): "
 
 if not "%SMTP_PASS%"=="" (
     echo [Adding] SMTP_PASS...

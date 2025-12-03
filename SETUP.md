@@ -12,14 +12,14 @@
    # 数据库连接
    DATABASE_URL="postgresql://user:password@localhost:5432/meeting_room_db"
    
-   # QQ邮箱SMTP配置
-   SMTP_USER="your-qq-email@qq.com"
-   SMTP_PASS="your-qq-email-auth-code"
+   # 139邮箱SMTP配置
+   SMTP_USER="your-email@139.com"
+   SMTP_PASS="your-139-email-auth-code"
    ```
 
-### 获取QQ邮箱授权码
+### 获取139邮箱授权码
 
-1. 登录QQ邮箱
+1. 登录139邮箱
 2. 进入 **设置** → **账户**
 3. 找到 **POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务**
 4. 开启 **POP3/SMTP服务** 或 **IMAP/SMTP服务**
@@ -112,7 +112,7 @@ npm run dev
 1. **添加团队成员**
    - 访问 `/team-members`
    - 点击"添加成员"
-   - 输入姓名和QQ邮箱
+   - 输入姓名和139邮箱
 
 2. **预约会议**
    - 访问 `/booking`
@@ -141,7 +141,7 @@ npm run dev
 
 ### 2. 邮件发送失败
 
-- 确认QQ邮箱已开启SMTP服务
+- 确认139邮箱已开启SMTP服务
 - 检查授权码是否正确
 - 确认 `SMTP_USER` 和 `SMTP_PASS` 环境变量已设置
 

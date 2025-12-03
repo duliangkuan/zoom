@@ -251,24 +251,24 @@ export default function TeamMembersPage() {
 
           <Form.Item
             name="email"
-            label="QQ邮箱"
+            label="139邮箱"
             rules={[
               { required: true, message: '请输入邮箱' },
               { type: 'email', message: '请输入正确的邮箱格式' },
             ]}
           >
-            <Input placeholder="请输入QQ邮箱" />
+            <Input placeholder="请输入139邮箱" />
           </Form.Item>
 
           <Form.Item
             name="authCode"
-            label="QQ邮箱授权码"
+            label="139邮箱授权码"
             rules={[
-              { required: true, message: '请输入QQ邮箱授权码' },
+              { required: true, message: '请输入139邮箱授权码' },
             ]}
-            help="用于发送会议邀请邮件，需要在QQ邮箱设置中生成授权码"
+            help="用于发送会议邀请邮件，需要在139邮箱设置中生成授权码"
           >
-            <Input.Password placeholder="请输入QQ邮箱授权码" />
+            <Input.Password placeholder="请输入139邮箱授权码" />
           </Form.Item>
 
           <Form.Item
